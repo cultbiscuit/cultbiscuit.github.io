@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="引言初学JS时，笔者本着上下求索不服输的精神硬啃犀牛书（你与成功的距离只有1k页=_=！）。但常常会被一些生涩而高大上的名词搞得晕头转向,比如作用域，作用域链，闭包，原型，原型链等。当然遇到问题就要解决问题，博客、论坛、社区上大家都乐于分享自己的见解，面对问题，只要你肯动手去搜索去实践，动脑去思考，那么没有什么问题不能解决。今天写一个博客，专门介绍作用域的实质是什么？JS是如何解析的？详细介绍词法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解作用域之词法解析">
+<meta property="og:url" content="http://yoursite.com/2017/08/08/scope/index.html">
+<meta property="og:site_name" content="胖C博客">
+<meta property="og:description" content="引言初学JS时，笔者本着上下求索不服输的精神硬啃犀牛书（你与成功的距离只有1k页=_=！）。但常常会被一些生涩而高大上的名词搞得晕头转向,比如作用域，作用域链，闭包，原型，原型链等。当然遇到问题就要解决问题，博客、论坛、社区上大家都乐于分享自己的见解，面对问题，只要你肯动手去搜索去实践，动脑去思考，那么没有什么问题不能解决。今天写一个博客，专门介绍作用域的实质是什么？JS是如何解析的？详细介绍词法">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-08-08T16:31:53.530Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入理解作用域之词法解析">
+<meta name="twitter:description" content="引言初学JS时，笔者本着上下求索不服输的精神硬啃犀牛书（你与成功的距离只有1k页=_=！）。但常常会被一些生涩而高大上的名词搞得晕头转向,比如作用域，作用域链，闭包，原型，原型链等。当然遇到问题就要解决问题，博客、论坛、社区上大家都乐于分享自己的见解，面对问题，只要你肯动手去搜索去实践，动脑去思考，那么没有什么问题不能解决。今天写一个博客，专门介绍作用域的实质是什么？JS是如何解析的？详细介绍词法">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/08/08/scope/"/>
+
+
+
+
+
+  <title>深入理解作用域之词法解析 | 胖C博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">胖C博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识总结，学习笔记</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/08/scope/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="胖C">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/timg.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="胖C博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">深入理解作用域之词法解析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-08T20:26:02+08:00">
+                2017-08-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>初学JS时，笔者本着上下求索不服输的精神硬啃犀牛书（你与成功的距离只有1k页=_=！）。但常常会被一些生涩而高大上的名词搞得晕头转向,比如作用域，作用域链，闭包，原型，原型链等。当然遇到问题就要解决问题，博客、论坛、社区上大家都乐于分享自己的见解，面对问题，只要你肯动手去搜索去实践，动脑去思考，那么没有什么问题不能解决。今天写一个博客，专门介绍作用域的实质是什么？JS是如何解析的？详细介绍词法作用域。</p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>首先大家先做一个小题目<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt;</div><div class="line">   alert(c);</div><div class="line">   var c=3;</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure></p>
+<p>很快就想到答案了吧？没错，输出undefined。<br>再来一个题目<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt;</div><div class="line">   alert(c);</div><div class="line">   c=3;</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure></p>
+<p>这次又会输出什么？ 会报错！<br>这两个小题，对大家来说肯定是简单的不能再简单了。<br>好，我们再来一个题目，如果你很快就做对了，相信你对作用域的词法解析已经掌握了。congratulations~<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt;</div><div class="line">   alert(a);</div><div class="line">   var a=1;</div><div class="line">   <span class="keyword">function</span> <span class="function"><span class="title">a</span></span>()&#123;</div><div class="line">      alert(2);</div><div class="line">   &#125;</div><div class="line">   alert(a);</div><div class="line">   var a=3;</div><div class="line">   alert(a);</div><div class="line">   <span class="keyword">function</span> <span class="function"><span class="title">a</span></span>()&#123;</div><div class="line">      alert(4);</div><div class="line">   &#125;</div><div class="line">   alert(a);</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure></p>
+<p>直接公布结果： function a(){alert(4);} 1 1 3 4<br>吃不吃惊？意不意外？我初做该题时很纳闷，哈哈如果你和我一样感觉到答案很神奇，那么接下来必须要用心读完接下来的内容。</p>
+<p>遇到问题就要解决问题，如何解决问题？我们要透过现象看本质，要明白JS解析器的解析顺序，只有明白机理，才能更好地解决问题。<br>也许大家听说过“函数声明提前”，“变量声明提前”这些名词，其实这都JS解析机制的名词化，方便记忆而已。</p>
+<h3 id="JS解析器"><a href="#JS解析器" class="headerlink" title="JS解析器"></a>JS解析器</h3><p>   <strong>  JS代码执行阶段就是通过JS解析器完成的，该过程大致分为两个阶段：<br>   1.预解析阶段（变量声明、函数声明）<br>   在这个阶段，JS解析器在代码中寻找 var function关键字（函数中的参数也是一个var声明），并将这些声明提前，此时var声明的变量赋一个undefined，而函数声明，则是整个函数整体，这些声明都会放在最头部。注意：当遇到重名的变量和函数，函数会覆盖变量（因为函数有内容=_=,胖子欺负瘦子 ）<br>   2.执行阶段（赋值运算、函数表达）<br>   当预解析完成后，就要开始干活了，从上而下，执行表达式。 </strong></p>
+<p>   明白了原理，好，我们去分析上面那个题！<br>   首先进行预解析，我们看到首先声明了一个var a，声明提前给它一个undefined，再声明一个函数a,该函数function a(){alert(2);}作为一个整体，声明提前并覆盖掉undefined，再往下走又声明一个函数a，该函数function a(){alert(4);}会把之前的内容覆盖掉。预解析到代码尾部了，OK，该阶段完成。进行执行阶段，首先alert(a)毋庸置疑，直接输出function a(){alert(4);}，然后给a赋值1，覆盖掉之前的函数，然后我们又遇到function a(){alert(2);}大家想一想a会不会变呢？肯定不会，因为这只是一个函数声明，声明已经在第一个阶段完成了。JS解析器直接跳过（除非是一个函数表达）之后 alert(a);输出1，之后又给a赋值3，输出3，之后又碰到一个函数声明，不care它，再次 alert(a);输出3。</p>
+<p>   怎么样？已经彻底明白了JS解析的机制了吧，这就是词法解析。 还没完，再做1个题目试试看？<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt;</div><div class="line">  var a=1;</div><div class="line">  <span class="keyword">function</span> <span class="function"><span class="title">fn</span></span>()&#123;</div><div class="line">	 alert(a);</div><div class="line">	 var a=2;</div><div class="line">  &#125;</div><div class="line">  fn();</div><div class="line">  alert(a);</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure></p>
+<p>输出 undefined 1 又蒙了？这个时候就牵扯到作用域的问题了，下文详细讲述一下作用域及其相关名词解释</p>
+<p><strong>JS有两个作用域。其一，全局作用域；其二，函数作用域。并不像C、JAVA中拥有块级作用域，但是ES6已经通过用let声明变量令循环表达式（例如for）<br>有了块级作用域的概念。当然这并不是本文的重点。还是回到JS全局与函数作用域这两个概念。</strong></p>
+<p>   <strong>全局作用域：</strong>在全局声明了变量，这个变量在全局（Window环境）中都可用。 </p>
+<p>   <strong>函数作用域：</strong>该函数在执行时，会拥有自己的作用域，在自己的作用域中仍然会执行预解析与执行阶段。函数中声明的变量，在本函数（包括内嵌<br>函数）可用，对外不可用（函数外部无法访问函数内部声明的变量）。</p>
+<p>   <strong>作用域链：</strong>当函数作用域内部对一个未声明的变量去赋值（例如a=2），在执行a=2表达式的时候，会在函数作用域中寻找声明的变量a，若找不到，则会<br>在上一级作用域中寻找是否有声明的a，若一直找不到，最终会在window声明该变量。这就组成了一个链式结构，这就是作用域链。</p>
+<p>   <strong>执行环境：</strong>即上下文环境，在表达式执行的时候，这个执行环境是动态的。本作用域内有声明变量，就会沿着作用域链找，所以说执行环境是动态的。 </p>
+<p>   分析上面题目：<br>首先声明了a,又声明了一个函数, a=undefined , function fn(){alert(a);var a=2; } 都放在全局作用域头部。然后执行函数表达式，好的，fn函数<br>有自己的作用域，先预解析发现有一个a,将它提前，在然后执行阶段alert(a);输出undefined,再给a赋值2，函数执行完，a占用的内存被垃圾回收。然后<br>执行alert(a);因为函数作用域声明了自己的a,函数的执行环境只是在自己的作用域内，因此不影响全局a,因此输出1.</p>
+<p>明白了原理还想不想再做一些题目？好，下面分享三个题目，简单陈述重点，并给出结果，供大家参考。 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt;</div><div class="line">   var a=1;</div><div class="line">   <span class="keyword">function</span> <span class="function"><span class="title">fn</span></span>()&#123;</div><div class="line">	 alert(a);</div><div class="line">	 a=2;</div><div class="line">   &#125;</div><div class="line">   fn();</div><div class="line">   alert(a);</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
+<p>输出： 1 2    原因：函数内部a沿着作用域链改变了全局变量a。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt;</div><div class="line"> 	  var a=1;</div><div class="line">	  <span class="keyword">function</span> fn(a)&#123;</div><div class="line">		 alert(a);</div><div class="line">		 a=2;</div><div class="line">	  &#125;</div><div class="line">	  fn();</div><div class="line">	  alert(a);</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure></p>
+<p> 输出： undefined 1  原因：函数参数内的a 相当于声明了一个局部变量。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt;</div><div class="line"> 	  var a=1;</div><div class="line">	  <span class="keyword">function</span> fn(a)&#123;</div><div class="line">		 alert(a);</div><div class="line">		 a=2;</div><div class="line">	  &#125;</div><div class="line">	  fn(a);</div><div class="line">	  alert(a);</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure></p>
+<p>输出： 1 1  原因：函数参数内的a声明了， 并且fn(a)为函数传参了</p>
+<p>关于作用域的词法解析就讲到这了。读完之后，是否还觉得作用域很神秘？       </p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/05/hello-hexo/" rel="next" title="好记性不如做笔记之JavaScript继承">
+                <i class="fa fa-chevron-left"></i> 好记性不如做笔记之JavaScript继承
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/timg.jpg"
+               alt="胖C" />
+          <p class="site-author-name" itemprop="name">胖C</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文"><span class="nav-number">2.</span> <span class="nav-text">正文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JS解析器"><span class="nav-number">2.1.</span> <span class="nav-text">JS解析器</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">胖C</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
