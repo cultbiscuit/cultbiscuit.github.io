@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="pang&#39;s blog">
 <meta property="og:description" content="我的处女博就献给JS继承吧哈哈哈^_^正文开始之前先叨唠几句。前端学习可谓路漫漫其修远兮，但我们应有上下求索的精神。大体上说学习分四步，一是知识获取，二是知识巩固，三是知识运用，四是知识创新。而做笔记就是第二步的重中之重，这是一个理顺思路、整理知识的过程，将自己学到的知识点完整地写下来，进而加深印象，更好地学习。在健壮技术栈的路上做笔记可谓是功不可没。好了，下面总结一下近期对JS继承的理解。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-08-20T08:55:46.997Z">
+<meta property="og:updated_time" content="2017-08-20T14:35:58.807Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="好记性不如做笔记之JavaScript继承">
 <meta name="twitter:description" content="我的处女博就献给JS继承吧哈哈哈^_^正文开始之前先叨唠几句。前端学习可谓路漫漫其修远兮，但我们应有上下求索的精神。大体上说学习分四步，一是知识获取，二是知识巩固，三是知识运用，四是知识创新。而做笔记就是第二步的重中之重，这是一个理顺思路、整理知识的过程，将自己学到的知识点完整地写下来，进而加深印象，更好地学习。在健壮技术栈的路上做笔记可谓是功不可没。好了，下面总结一下近期对JS继承的理解。">
@@ -379,9 +379,9 @@ Dad.prototype.getName=<span class="function"><span class="title">function</span>
 
 <span class="keyword">function</span> Child(sex){this.sex=sex;}  //创建子类的构造函数
 Child.prototype=new Dad(<span class="string">"Scott"</span>);  //将Dad实例对象赋给子类原型（这是一个引用类型赋给另一个引用类型的过程）
-Child.prototype.constructor=Child;//上面语句把new Dad的constructor赋给了Child.prototype
-                                 //（当然该表达式不写也没有关系因为constructor是易变的，
-                                //函数执行后又重新指向了Child。这么写是一种规范，应提倡！！
+Child.prototype.constructor=Child; //上面语句把new Dad的constructor赋给了Child.prototype
+                                  //（当然该表达式不写也没有关系因为constructor是易变的，
+                                 //函数执行后又重新指向了Child。这么写是一种规范，应提倡！！
 Child.prototype.ownMethod=<span class="function"><span class="title">function</span></span>(){ console.log(<span class="string">"my dad is"</span>+this.name);}//子类增加方法
 
 var foo=new Child(<span class="string">"boy"</span>); //实例化子集
@@ -499,6 +499,44 @@ f.getName();   //&gt;&gt;Scott111</span>
 
 
     <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
       
     </div>
   </div>
@@ -685,6 +723,26 @@ f.getName();   //&gt;&gt;Scott111</span>
 
 
         
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>访客
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
 
         
       </div>
