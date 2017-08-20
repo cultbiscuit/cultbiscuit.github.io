@@ -99,7 +99,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="深入理解作用域之词法解析">
 <meta property="og:url" content="http://yoursite.com/2017/08/08/scope/index.html">
-<meta property="og:site_name" content="胖C博客">
+<meta property="og:site_name" content="pang&#39;s blog">
 <meta property="og:description" content="初学JS时，笔者本着上下求索不服输的精神硬啃犀牛书（你与成功的距离只有1k页^^）。但常常会被一些生涩而高大上的名词搞得晕头转向,比如作用域，作用域链，闭包，原型，原型链等。当然遇到问题就要解决问题，博客、论坛、社区上大家都乐于分享自己的见解，面对问题，只要你肯动手去搜索去实践，动脑去思考，那么没有什么问题不能解决。今天写一个博客，专门介绍作用域的实质是什么？JS是如何解析的？详细介绍词法作用域。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2017-08-20T08:54:53.812Z">
@@ -140,7 +140,7 @@
 
 
 
-  <title>深入理解作用域之词法解析 | 胖C博客</title>
+  <title>深入理解作用域之词法解析 | pang's blog</title>
   
 
 
@@ -169,15 +169,14 @@
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner">
-<div class="site-brand-wrapper">
+      <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta ">
     
    
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">胖C博客</span>
+        <span class="site-title">pang's blog</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -267,13 +266,13 @@
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/08/scope/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="胖C">
+      <meta itemprop="name" content="pangc">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/timg.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="胖C博客">
+      <meta itemprop="name" content="pang's blog">
     </span>
 
     
@@ -483,8 +482,8 @@
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/timg.jpg"
-               alt="胖C" />
-          <p class="site-author-name" itemprop="name">胖C</p>
+               alt="pangc" />
+          <p class="site-author-name" itemprop="name">pangc</p>
            
               <p class="site-description motion-element" itemprop="description"></p>
           
@@ -541,7 +540,7 @@
               </span>
             
               <span class="links-of-author-item">
-                <a href="" target="_blank" title="Twitter">
+                <a href="Link" target="_blank" title="Twitter">
                   
                     <i class="fa fa-fw fa-twitter"></i>
                   
@@ -604,7 +603,7 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">胖C</span>
+  <span class="author" itemprop="copyrightHolder">pangc</span>
 </div>
 
 
