@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="学习笔记," />
 
 
 
@@ -94,17 +94,18 @@
 
 
 
-<meta name="description" content="引言大家在学JS的时候一定都见过(function fn(){ })( )或者(function fn(){ }())这样的写法，甚至!function fn(){ }( )这样的写法。既简洁又高大上。这就是IIFE(Immediately Invoked Function Expression)，即立即调用的函数表达式，当然有人称呼它为立即调用函数或自执行函数，严格来说，这样的叫法是不严谨的。如">
+<meta name="description" content="大家在学JS的时候一定都见过(function fn(){ })( )或者(function fn(){ }())这样的写法，甚至!function fn(){ }( )这样的写法。既简洁又高大上。这就是IIFE(Immediately Invoked Function Expression)，即立即调用的函数表达式，当然有人称呼它为立即调用函数或自执行函数，严格来说，这样的叫法是不严谨的。如果你">
+<meta name="keywords" content="学习笔记">
 <meta property="og:type" content="article">
 <meta property="og:title" content="IIFE这么强大，幕后大佬究竟是谁？">
 <meta property="og:url" content="http://yoursite.com/2017/08/18/IIFE/index.html">
 <meta property="og:site_name" content="胖C博客">
-<meta property="og:description" content="引言大家在学JS的时候一定都见过(function fn(){ })( )或者(function fn(){ }())这样的写法，甚至!function fn(){ }( )这样的写法。既简洁又高大上。这就是IIFE(Immediately Invoked Function Expression)，即立即调用的函数表达式，当然有人称呼它为立即调用函数或自执行函数，严格来说，这样的叫法是不严谨的。如">
+<meta property="og:description" content="大家在学JS的时候一定都见过(function fn(){ })( )或者(function fn(){ }())这样的写法，甚至!function fn(){ }( )这样的写法。既简洁又高大上。这就是IIFE(Immediately Invoked Function Expression)，即立即调用的函数表达式，当然有人称呼它为立即调用函数或自执行函数，严格来说，这样的叫法是不严谨的。如果你">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-08-20T07:16:22.560Z">
+<meta property="og:updated_time" content="2017-08-20T08:54:02.267Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="IIFE这么强大，幕后大佬究竟是谁？">
-<meta name="twitter:description" content="引言大家在学JS的时候一定都见过(function fn(){ })( )或者(function fn(){ }())这样的写法，甚至!function fn(){ }( )这样的写法。既简洁又高大上。这就是IIFE(Immediately Invoked Function Expression)，即立即调用的函数表达式，当然有人称呼它为立即调用函数或自执行函数，严格来说，这样的叫法是不严谨的。如">
+<meta name="twitter:description" content="大家在学JS的时候一定都见过(function fn(){ })( )或者(function fn(){ }())这样的写法，甚至!function fn(){ }( )这样的写法。既简洁又高大上。这就是IIFE(Immediately Invoked Function Expression)，即立即调用的函数表达式，当然有人称呼它为立即调用函数或自执行函数，严格来说，这样的叫法是不严谨的。如果你">
 
 
 
@@ -168,10 +169,11 @@
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
+      <div class="header-inner">
+<div class="site-brand-wrapper">
   <div class="site-meta ">
     
-
+   
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
@@ -302,6 +304,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -329,7 +353,7 @@
       
 
       
-        <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>大家在学JS的时候一定都见过(function fn(){ })( )或者(function fn(){ }())这样的写法，甚至!function fn(){ }( )这样的写法。既简洁又高大上。这就是IIFE(Immediately Invoked Function Expression)，即立即调用的函数表达式，当然有人称呼它为立即调用函数或自执行函数，严格来说，这样的叫法是不严谨的。如果你只是会用而不理解它的工作机制，学习道路上是无法走得更远的。该篇博文将详细讲解一下IIFE工作机制。</p>
+        <p>大家在学JS的时候一定都见过(function fn(){ })( )或者(function fn(){ }())这样的写法，甚至!function fn(){ }( )这样的写法。既简洁又高大上。这就是IIFE(Immediately Invoked Function Expression)，即立即调用的函数表达式，当然有人称呼它为立即调用函数或自执行函数，严格来说，这样的叫法是不严谨的。如果你只是会用而不理解它的工作机制，学习道路上是无法走得更远的。该篇博文将详细讲解一下IIFE工作机制。<br><a id="more"></a></p>
 <h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>上一篇博文，我讲到作用域的词法解析，详细介绍了JS预解析时函数声明提前的概念。<a href="http://pangc.cc/2017/08/08/scope/" target="_blank" rel="external">传送门</a> ，IIFE的本质就是从这个知识点开始的。</p>
 <h3 id="函数运行机制"><a href="#函数运行机制" class="headerlink" title="函数运行机制"></a>函数运行机制</h3><p>我们先看一下函数定义的两种形式:<br>1.函数以语句的形式定义（函数声明）<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">function</span> <span class="function"><span class="title">fn</span></span>()&#123;</div><div class="line">     alert(<span class="string">"函数声明"</span>);</div><div class="line">	 &#125;</div></pre></td></tr></table></figure></p>
 <p>2.函数以表达式形式定义（函数表达式）<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var fn=<span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">     alert(<span class="string">"函数表达式"</span>);</div><div class="line">	 &#125;</div></pre></td></tr></table></figure></p>
@@ -360,6 +384,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/学习笔记/" rel="tag"># 学习笔记</a>
+          
+        </div>
       
 
       
@@ -462,7 +492,25 @@
           
 
           
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
 
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
           
 
         </nav>
@@ -470,6 +518,30 @@
         
 
         <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/cultbiscuit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                    
+                      Twitter
+                    
+                </a>
+              </span>
+            
           
         </div>
 
@@ -494,7 +566,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文"><span class="nav-number">2.</span> <span class="nav-text">正文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#函数运行机制"><span class="nav-number">2.1.</span> <span class="nav-text">函数运行机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IIFE"><span class="nav-number">2.2.</span> <span class="nav-text">IIFE</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#正文"><span class="nav-number">1.</span> <span class="nav-text">正文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#函数运行机制"><span class="nav-number">1.1.</span> <span class="nav-text">函数运行机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IIFE"><span class="nav-number">1.2.</span> <span class="nav-text">IIFE</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
@@ -514,7 +586,9 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        
+
+<div class="copyright" >
   
   &copy; 
   <span itemprop="copyrightYear">2017</span>

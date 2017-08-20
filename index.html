@@ -166,10 +166,11 @@
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
+      <div class="header-inner">
+<div class="site-brand-wrapper">
   <div class="site-meta ">
     
-
+   
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
@@ -302,6 +303,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -330,26 +353,14 @@
 
       
         
-          
-            <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>大家在学JS的时候一定都见过(function fn(){ })( )或者(function fn(){ }())这样的写法，甚至!function fn(){ }( )这样的写法。既简洁又高大上。这就是IIFE(Immediately Invoked Function Expression)，即立即调用的函数表达式，当然有人称呼它为立即调用函数或自执行函数，严格来说，这样的叫法是不严谨的。如果你只是会用而不理解它的工作机制，学习道路上是无法走得更远的。该篇博文将详细讲解一下IIFE工作机制。</p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>上一篇博文，我讲到作用域的词法解析，详细介绍了JS预解析时函数声明提前的概念。<a href="http://pangc.cc/2017/08/08/scope/" target="_blank" rel="external">传送门</a> ，IIFE的本质就是从这个知识点开始的。</p>
-<h3 id="函数运行机制"><a href="#函数运行机制" class="headerlink" title="函数运行机制"></a>函数运行机制</h3><p>我们先看一下函数定义的两种形式:<br>1.函数以语句的形式定义（函数声明）<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">function</span> <span class="function"><span class="title">fn</span></span>()&#123;</div><div class="line">     alert(<span class="string">"函数声明"</span>);</div><div class="line">	 &#125;</div></pre></td></tr></table></figure></p>
-<p>2.函数以表达式形式定义（函数表达式）<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var fn=<span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">     alert(<span class="string">"函数表达式"</span>);</div><div class="line">	 &#125;</div></pre></td></tr></table></figure></p>
-<p>从JS解析角度分析它们背后的运作模式：<br><strong>针对第一种函数声明形式：在JS预解析的时候，看到了函数声明function，因此会将函数声明提前，将整体function fn(){alert(“函数声明”);}置于当前的执行环境。注意这只是一个声明！！！并没有调用该函数，因此没有执行。当然也不会输出任何值。<br>针对第二种函数表达式形式：在JS预解析的时候，看到了变量var fn，因此会将变量声明提前，并给fn赋一个初值undefined置于当前的执行环境。因为这是一个表达式，所以会给fn变量赋值（该例子的值是一个匿名函数），该匿名函数function(){alert(“函数表达式”);}整体声明之后，然后赋给了变量fn。注意这只是一个函数声明！！！并没有调用该函数，因此没有执行。当然也不会输出任何值。</strong></p>
-<p>经过分析之后，是否明朗了一些？现在我对这两个形式分别加一个执行语句：<br>1.函数以语句的形式定义（函数声明）<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">function</span> <span class="function"><span class="title">fn</span></span>()&#123;</div><div class="line">     alert(<span class="string">"函数声明"</span>);</div><div class="line">	 &#125;</div><div class="line">fn();</div></pre></td></tr></table></figure></p>
-<p>2.函数以表达式形式定义（函数表达式）<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var fn=<span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">     alert(<span class="string">"函数表达式"</span>);</div><div class="line">	 &#125;</div><div class="line">fn();</div></pre></td></tr></table></figure></p>
-<p>针对函数声明形式：添加fn();这是执行语句，此时会输出“函数声明”。（在预解析阶段将匿名函数已经声明提前了，执行fn()输出）<br>针对函数表达式形式：添加fn();这是执行语句，此时会输出“函数表达式”。（在执行阶段将匿名函数已经声明提前了，并赋给fn，执行fn()输出）</p>
-<p>进一步修改，将执行语句放在函数定义前面会有怎样的变化？<br>1.函数以语句的形式定义（函数声明）<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">fn();</div><div class="line"><span class="keyword">function</span> <span class="function"><span class="title">fn</span></span>()&#123;</div><div class="line">     alert(<span class="string">"函数声明"</span>);</div><div class="line">	 &#125;</div></pre></td></tr></table></figure></p>
-<p>2.函数以表达式形式定义（函数表达式）<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">fn();</div><div class="line">var fn=<span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">     alert(<span class="string">"函数表达式"</span>);</div><div class="line">	 &#125;</div></pre></td></tr></table></figure></p>
-<p>针对函数声明形式：添加fn();这是执行语句，此时会输出“函数声明”。<br>针对函数表达式形式：添加fn();这是执行语句，此时会<strong>报错！！！！</strong></p>
-<p>为什么会报错？仔细想一想。（因为在预解析阶段并没有将匿名函数提前！执行环境中没有fn，执行fn()时当然报错）</p>
-<h3 id="IIFE"><a href="#IIFE" class="headerlink" title="IIFE"></a>IIFE</h3><p>明白了函数运行机制，再理解IIFE就小菜一碟了。<br>IIFE直译就是立即调用的函数表达式，注意最后五个字<strong>函数表达式</strong>，什么是函数表达式？<br>对变量使用了运算符，或者赋值运算都是函数表达式。比如说a=1;a+=1;a++;这些都是函数表达式。</p>
-<p>在IIFE中<br>1.对function fn(){}使用了()运算符，匿名函数就变成了一个表达式(function fn(){})，此时对这个函数表达式后面加()表示执行。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">(<span class="keyword">function</span> fn(a)&#123;</div><div class="line">	console(a);</div><div class="line">	&#125;)(111); </div><div class="line">输出111</div></pre></td></tr></table></figure></p>
-<p>2.对function fn(){}使用了!运算符，匿名函数就变成了一个表达式!function fn(){}，此时对这个函数表达式后面加()表示执行。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">!<span class="keyword">function</span> fn(a)&#123;</div><div class="line">	console(a);</div><div class="line">	&#125;(111);</div><div class="line">输出111</div></pre></td></tr></table></figure></p>
-<p>3.对function fn(){}使用了=运算符，匿名函数就变成了一个表达式var p=function fn(){}，此时对这个函数表达式后面加()表示执行。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var p=<span class="keyword">function</span> fn(a)&#123;</div><div class="line">	console(a);</div><div class="line">	&#125;(111);</div><div class="line">输出111</div></pre></td></tr></table></figure></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>IIFE的实质就是利用() ! = + 等运算符将对函数声明转化为函数表达式，然后看到表达式后面有()，再去执行。因此这就是立即执行函数表达式。因为()运算符，给人更直观的感受，形如(function fn(){})()，成为IIFE的常用写法，这种写法又称作“函数包裹器”。<br>总结到这里，希望对读者有帮助。</p>
-
-          
+          <p>大家在学JS的时候一定都见过(function fn(){ })( )或者(function fn(){ }())这样的写法，甚至!function fn(){ }( )这样的写法。既简洁又高大上。这就是IIFE(Immediately Invoked Function Expression)，即立即调用的函数表达式，当然有人称呼它为立即调用函数或自执行函数，严格来说，这样的叫法是不严谨的。如果你只是会用而不理解它的工作机制，学习道路上是无法走得更远的。该篇博文将详细讲解一下IIFE工作机制。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/18/IIFE/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -438,6 +449,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试/" itemprop="url" rel="index">
+                    <span itemprop="name">面试</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -466,14 +499,14 @@
 
       
         
-          
-            <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>今天下午参加了网易校招的内推笔试，答得不好。分享一道编程题吧<br>题目描述的很复杂，简述一下就是输入一个01字符串，输出连续的01子串的最大个数。<br>例如：输入“0101011001001001”，它的连续的01子串有010101,10,100,010,01其中最长的为010101，长度为6，因此输出6。</p>
-<p>最近一直在学JS，我就用JS去写了，思路很容易得到，我把代码敲好了，但难免会有bug，调试了一会儿，时间就到了（当然得分为零，西湖的水，我的泪啊啊=_=||），不禁觉得怎么时间过得如此快？难道学到忘我了？哈哈哈哈</p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>分析一下思路。<br>我们输入一个字符串，要输出最大子串的长度，因此首先考虑到数组和for循环。于是要用split把这个字符串一顿拆。于是对数组遍历，当遍历到相邻的两个元素相同时，就得停止遍历，然后得到该子串的长度，保存下来。再利用slice方法将这个子串切掉，得到一个新数组，然后怎么办？大家一定都知道，当然是利用递归的方法把新数组再遍历，然后找出子串的长度记录下来并与上一个子串的长度比较，取最大的长度。然后重复切数组、遍历、取最大这三个步骤。当切完后的数组长度为1的时候，我们输出最大的字串长度。<br>或许还有更好的思路，如果你有的话欢迎加扣扣2210980727我们一起讨论，共同进步。<br>分享一下 我的代码：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt; 	</div><div class="line">   <span class="keyword">function</span> outPutMaxLength(arr)&#123;</div><div class="line">	   var newArr;</div><div class="line">	   var j=arr.length; </div><div class="line">	   <span class="keyword">for</span>(var i=1;i&lt;j;i++)</div><div class="line">	   &#123;</div><div class="line">		  <span class="keyword">if</span>(arr[i]==arr[i-1])</div><div class="line">		  &#123;</div><div class="line">		     newArr=arr.slice(i);</div><div class="line">			 j=i;</div><div class="line">		     res=Math.max(res,j);</div><div class="line">		  &#125;</div><div class="line">	   &#125;   </div><div class="line">	  //递归		</div><div class="line">      <span class="keyword">if</span>(newArr.length!==1)</div><div class="line">	  &#123; </div><div class="line">	    <span class="built_in">return</span> outPutMaxLength(newArr);</div><div class="line">	  &#125;</div><div class="line">	  <span class="keyword">else</span></div><div class="line">	  &#123;</div><div class="line">	   <span class="built_in">return</span> res;</div><div class="line">      &#125;		</div><div class="line">   &#125;</div><div class="line">	var s=<span class="string">'101101011'</span>;  </div><div class="line">	var sArray=s.split(<span class="string">""</span>);</div><div class="line">	var res=0;</div><div class="line">	var ans=outPutMaxLength(sArray);</div><div class="line">	document.write(ans); 	 </div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure></p>
-<p>短短几十行，我在敲打码时，敲出了bug，很酷的扔掉了20分。</p>
-<h2 id="感悟"><a href="#感悟" class="headerlink" title="感悟"></a>感悟</h2><p>理论很简单，思路也很明确，但写起程序来就完全不是一回事了，还得多练啊。不说了，我要去敲代码了23333</p>
-
-          
+          <p>今天下午参加了网易校招的内推笔试，答得不好。分享一道编程题吧。<br>题目描述的很复杂，简述一下就是输入一个01字符串，输出连续的01子串的最大个数。<br>例如：输入“0101011001001001”，它的连续的01子串有010101,10,100,010,01其中最长的为010101，长度为6，因此输出6。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/12/test/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -562,6 +595,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -590,31 +645,14 @@
 
       
         
-          
-            <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>初学JS时，笔者本着上下求索不服输的精神硬啃犀牛书（你与成功的距离只有1k页^^）。但常常会被一些生涩而高大上的名词搞得晕头转向,比如作用域，作用域链，闭包，原型，原型链等。当然遇到问题就要解决问题，博客、论坛、社区上大家都乐于分享自己的见解，面对问题，只要你肯动手去搜索去实践，动脑去思考，那么没有什么问题不能解决。今天写一个博客，专门介绍作用域的实质是什么？JS是如何解析的？详细介绍词法作用域。</p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>首先大家先做一个小题目<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt;</div><div class="line">   alert(c);</div><div class="line">   var c=3;</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure></p>
-<p>很快就想到答案了吧？没错，输出undefined。<br>再来一个题目<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt;</div><div class="line">   alert(c);</div><div class="line">   c=3;</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure></p>
-<p>这次又会输出什么？ 会报错！<br>这两个小题，对大家来说肯定是简单的不能再简单了。<br>好，我们再来一个题目，如果你很快就做对了，相信你对作用域的词法解析已经掌握了。congratulations~<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt;</div><div class="line">   alert(a);</div><div class="line">   var a=1;</div><div class="line">   <span class="keyword">function</span> <span class="function"><span class="title">a</span></span>()&#123;</div><div class="line">      alert(2);</div><div class="line">   &#125;</div><div class="line">   alert(a);</div><div class="line">   var a=3;</div><div class="line">   alert(a);</div><div class="line">   <span class="keyword">function</span> <span class="function"><span class="title">a</span></span>()&#123;</div><div class="line">      alert(4);</div><div class="line">   &#125;</div><div class="line">   alert(a);</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure></p>
-<p>直接公布结果： function a(){alert(4);} 1 1 3 4<br>吃不吃惊？意不意外？我初做该题时很纳闷，哈哈如果你和我一样感觉到答案很神奇，那么接下来必须要用心读完接下来的内容。</p>
-<p>遇到问题就要解决问题，如何解决问题？我们要透过现象看本质，要明白JS解析器的解析顺序，只有明白机理，才能更好地解决问题。也许大家听说过“函数声明提前”，“变量声明提前”这些名词，其实这都JS解析机制的名词化，方便记忆而已。</p>
-<h3 id="JS解析器"><a href="#JS解析器" class="headerlink" title="JS解析器"></a>JS解析器</h3><p>   <strong>  JS代码执行阶段就是通过JS解析器完成的，该过程大致分为两个阶段：<br>   1.预解析阶段（变量声明、函数声明）<br>   在这个阶段，JS解析器在代码中寻找 var function关键字（函数中的参数也是一个var声明），并将这些声明提前，此时var声明的变量赋一个undefined，而函数声明，则是整个函数整体，这些声明都会放在最头部。注意：当遇到重名的变量和函数，函数会覆盖变量（因为函数有内容=_=,胖子欺负瘦子 ）<br>   2.执行阶段（赋值运算、函数表达）<br>   当预解析完成后，就要开始干活了，从上而下，执行表达式。 </strong></p>
-<p>   明白了原理，好，我们去分析上面那个题！<br>   首先进行预解析，我们看到首先声明了一个var a，声明提前给它一个undefined，再声明一个函数a,该函数functiona(){alert(2);}作为一个整体，声明提前并覆盖掉undefined，再往下走又声明一个函数a，该函数function a(){alert(4);}会把之前的内容覆盖掉。预解析到代码尾部了，OK，该阶段完成。进行执行阶段，首先alert(a)毋庸置疑，直接输出function a(){alert(4);}，然后给a赋值1，覆盖掉之前的函数，然后我们又遇到function a(){alert(2);}大家想一想a会不会变呢？肯定不会，因为这只是一个函数声明，声明已经在第一个阶段完成了。JS解析器直接跳过（除非是一个函数表达）之后 alert(a);输出1，之后又给a赋值3，输出3，之后又碰到一个函数声明，不care它，再次 alert(a);输出3。</p>
-<p>   怎么样？已经彻底明白了JS解析的机制了吧，这就是词法解析。 还没完，再做1个题目试试看？<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt;</div><div class="line">  var a=1;</div><div class="line">  <span class="keyword">function</span> <span class="function"><span class="title">fn</span></span>()&#123;</div><div class="line">	 alert(a);</div><div class="line">	 var a=2;</div><div class="line">  &#125;</div><div class="line">  fn();</div><div class="line">  alert(a);</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure></p>
-<p>输出 undefined 1 又蒙了？这个时候就牵扯到作用域的问题了，下文详细讲述一下作用域及其相关名词解释</p>
-<p><strong>JS有两个作用域。其一，全局作用域；其二，函数作用域。并不像C、JAVA中拥有块级作用域，但是ES6已经通过用let声明变量令循环表达式（例如for）有了块级作用域的概念。当然这并不是本文的重点。还是回到JS全局与函数作用域这两个概念。</strong></p>
-<p>   <strong>全局作用域：</strong>在全局声明了变量，这个变量在全局（Window环境）中都可用。 </p>
-<p>   <strong>函数作用域：</strong>该函数在执行时，会拥有自己的作用域，在自己的作用域中仍然会执行预解析与执行阶段。函数中声明的变量，在本函数（包括内嵌函数）可用，对外不可用（函数外部无法访问函数内部声明的变量）。</p>
-<p>   <strong>作用域链：</strong>当函数作用域内部对一个未声明的变量去赋值（例如a=2），在执行a=2表达式的时候，会在函数作用域中寻找声明的变量a，若找不到，则会在上一级作用域中寻找是否有声明的a，若一直找不到，最终会在window声明该变量。这就组成了一个链式结构，这就是作用域链。</p>
-<p>   <strong>执行环境：</strong>即上下文环境，在表达式执行的时候，这个执行环境是动态的。本作用域内有声明变量，就会沿着作用域链找，所以说执行环境是动态的。 </p>
-<p>分析上面题目：<br>首先声明了a,又声明了一个函数, a=undefined , function fn(){alert(a);var a=2; } 都放在全局作用域头部。然后执行函数表达式，好的，fn函数有自己的作用域，先预解析发现有一个a,将它提前，在然后执行阶段alert(a);输出undefined,再给a赋值2，函数执行完，a占用的内存被垃圾回收。然后执行alert(a);因为函数作用域声明了自己的a,函数的执行环境只是在自己的作用域内，因此不影响全局a,因此输出1.</p>
-<p>明白了原理还想不想再做一些题目？好，下面分享三个题目，简单陈述重点，并给出结果，供大家参考。 </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt;</div><div class="line">   var a=1;</div><div class="line">   <span class="keyword">function</span> <span class="function"><span class="title">fn</span></span>()&#123;</div><div class="line">	 alert(a);</div><div class="line">	 a=2;</div><div class="line">   &#125;</div><div class="line">   fn();</div><div class="line">   alert(a);</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
-<p>输出： 1 2    原因：函数内部a沿着作用域链改变了全局变量a。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt;</div><div class="line"> 	  var a=1;</div><div class="line">	  <span class="keyword">function</span> fn(a)&#123;</div><div class="line">		 alert(a);</div><div class="line">		 a=2;</div><div class="line">	  &#125;</div><div class="line">	  fn();</div><div class="line">	  alert(a);</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure></p>
-<p> 输出： undefined 1  原因：函数参数内的a 相当于声明了一个局部变量。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt;</div><div class="line"> 	  var a=1;</div><div class="line">	  <span class="keyword">function</span> fn(a)&#123;</div><div class="line">		 alert(a);</div><div class="line">		 a=2;</div><div class="line">	  &#125;</div><div class="line">	  fn(a);</div><div class="line">	  alert(a);</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure></p>
-<p>输出： 1 1  原因：函数参数内的a声明了， 并且fn(a)为函数传参了</p>
-<p>关于作用域的词法解析就讲到这了。读完之后，是否还觉得作用域很神秘？       </p>
-
-          
+          <p>初学JS时，笔者本着上下求索不服输的精神硬啃犀牛书（你与成功的距离只有1k页^^）。但常常会被一些生涩而高大上的名词搞得晕头转向,比如作用域，作用域链，闭包，原型，原型链等。当然遇到问题就要解决问题，博客、论坛、社区上大家都乐于分享自己的见解，面对问题，只要你肯动手去搜索去实践，动脑去思考，那么没有什么问题不能解决。今天写一个博客，专门介绍作用域的实质是什么？JS是如何解析的？详细介绍词法作用域。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/08/scope/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -703,6 +741,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -731,86 +791,14 @@
 
       
         
-          
-            <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>我的处女博就献给JS继承吧哈哈哈^_^<br>正文开始之前先叨唠几句。前端学习可谓路漫漫其修远兮，但我们应有上下求索的精神。大体上说学习分四步，一是知识获取，二是知识巩固，三是知识运用，四是知识创新。而做笔记就是第二步的重中之重，这是一个理顺思路、整理知识的过程，将自己学到的知识点完整地写下来，进而加深印象，更好地学习。在健壮技术栈的路上做笔记可谓是功不可没。好了，下面总结一下近期对JS继承的理解。</p>
-<p>—————并不华丽的废话分割线—————</p>
-<p>在面向对象编程（OOP）中，继承是一个重要的概念。在讲继承之前，有必要去明白什么是构造函数、原型对象、原型链、prototype（<em>proto</em>）以及constructor属性。并且要透彻他们之间是什么关系。我一一对他们做简要介绍后期会博客专门阐述他们之间的关系。</p>
-<p><strong>构造函数：</strong>顾名思义构造函数是一个函数，但函数也是一个对象。它是创建对象的一种方法（通过new生成实例对象）例如内置对象Array就是一个构造函数，可以通过new Array()生成数组对象。</p>
-<p><strong>原型对象：</strong>每个构造函数初始化时都有一个prototype属性，构造函数.prototype就是原型对象</p>
-<p><strong>原型链  ：</strong>原型对象与构造函数通过prototype连接，而原型对象与实例对象（new 构造函数）通过<em>proto</em>连接，构造函数又通过<em>proto</em>与Function.prototype连接，而Function.prototype又通过<em>proto</em>与Object.prototype连接，还要考虑到在JS继承的子类又通过prototype属性与父类构造函数连接，我们可以看到这些实例对象、构造函数、原型对象、子类、子类的实例对象通过prototype与<em>proto</em>形成了一个链式结构，这个链就叫做原型链。（只是简单说一下，学问大着呢）</p>
-<p><strong>prototype：</strong>又称显式原型，存在于各个函数中。每个函数初始化时都有一个prototype属性，这个属性指向一个对象，即A.prototype（设函数为A）</p>
-<p><strong> <em>proto</em> :</strong> 又称隐式原型，存在于任何对象之中，每个人对象都有<em>proto</em>属性。该对象的<em>proto</em>指向它的构造函数的原型对象。</p>
-<p><strong>constructor：</strong>这个属性是原型对象自带的，这个属性是易变的，通常指向原型对象的构造函数。</p>
-<p>—————这才是正文———————-</p>
-<p>通过对以上名词的介绍，令大家对面向对象概念有个基本的了解。接下来就开始介绍JavaScript继承，目前掌握了三种继承方式，本文将通过实例详细总结继承的原理以及相应的优缺点。</p>
-<h2 id="第一种：原型链继承"><a href="#第一种：原型链继承" class="headerlink" title="第一种：原型链继承"></a>第一种：原型链继承</h2><p>该种方法的思想是：父类（原型对象）的实例作为子类的原型对象。话不多说直接扔代码：</p>
-<pre><code class="bash"><span class="keyword">function</span> Dad(name){ this.name=name;}  //创建构造函数
-Dad.prototype.getName=<span class="function"><span class="title">function</span></span>(){console.log(this.name);}   //原型对象添加方法method
-
-<span class="keyword">function</span> Child(sex){this.sex=sex;}  //创建子类的构造函数
-Child.prototype=new Dad(<span class="string">"Scott"</span>);  //将Dad实例对象赋给子类原型（这是一个引用类型赋给另一个引用类型的过程）
-Child.prototype.constructor=Child;//上面语句把new Dad的constructor赋给了Child.prototype
-                                 //（当然该表达式不写也没有关系因为constructor是易变的，
-                                //函数执行后又重新指向了Child。这么写是一种规范，应提倡！！
-Child.prototype.ownMethod=<span class="function"><span class="title">function</span></span>(){ console.log(<span class="string">"my dad is"</span>+this.name);}//子类增加方法
-
-var foo=new Child(<span class="string">"boy"</span>); //实例化子集
-foo.name;       //Scott  子类实例可以享用父类构造函数的属性name
-foo.getName(); // &gt;&gt;Scott 子类实例可以享用父类的方法getName()
-foo.sex;      // &gt;&gt;boy 子类自己的属性
-foo.ownMethod();//&gt;&gt;my dad is Scott 子类实例调用自己的方法
-
-var f=new Dad(<span class="string">"Scott111"</span>);//创建一个父类的实例
-f.ownMethod();  //&gt;&gt;error 可以看到父类并不能调用子类创建的方法！
-f.getName();    //&gt;&gt;Scott111
-</code></pre>
-<p>这种父类引用类型赋给子类引用类型（父类实例对象赋给子类原型对象）的方法，使Child成功继承了Dad。实现父类方法的复用（子类没有该方法那么，子类对象就会沿着原型链向上找，直到找到这个方法，就用）</p>
-<p><strong>存在缺点：</strong></p>
-<p>1.当父类中包含引用类型属性的时候，这些引用类型会被实例对象共享，因为只有一个内存地址，实例对象将它改变了，在实例化其他的实例对象时，或者说其他子类在继承时，会有意想不到的后果。函数方法也是引用类型，也被共享，但不用担心被篡改，因为垃圾回收机制一个函数执行完，就会回收内部变量所占用的空间，而且函数作用域阻止了内部变量的共享。<br>2.上面代码Child.prototype=new Dad(“Scott”); 可以看到，在创建子类原型时，父类的实例对象已经将参数传递了，以后子集实例化对象时并不能給父类构造函数传参。</p>
-<h2 id="第二种：构造函数继承（call-apply借用）"><a href="#第二种：构造函数继承（call-apply借用）" class="headerlink" title="第二种：构造函数继承（call apply借用）"></a>第二种：构造函数继承（call apply借用）</h2><pre><code class="bash"><span class="keyword">function</span> Dad(name){ this.name=name;}  //创建构造函数
-Dad.prototype.getName=<span class="function"><span class="title">function</span></span>(){console.log(this.name);}   //原型对象添加方法method
-
-<span class="keyword">function</span> Child(sex,name){this.sex=sex;Dad.call(this,name);}   //创建子类的构造函数,利用call将父类构造函数的中this指向了子类构造函数（借用）
-Child.prototype.constructor=Child; 
-Child.prototype.ownMethod=<span class="function"><span class="title">function</span></span>(){ console.log(<span class="string">"my dad is"</span>+this.name);}//子类增加方法
-
-var foo=new Child(<span class="string">"boy"</span>,<span class="string">"Scott's son"</span>); //实例化子集
-foo.name;       // &gt;&gt;Scott<span class="string">'s son 子类实例子集传参用自己的name
-foo.getName(); //&gt;&gt;error 无法共享父类的方法！！！！！！
-foo.sex;      // &gt;&gt;boy 子类自己的属性
-foo.ownMethod();//&gt;&gt;my dad is Scott'</span>s son  =。=
-
-var f=new Dad(<span class="string">"Scott111"</span>);//创建一个父类的实例，传入自己的参数，不受子类传参影响
-f.ownMethod();  //&gt;&gt;error 可以看到父类并不能调用子类创建的方法！           
-f.getName();   //&gt;&gt;Scott111 输出父类名字
-</code></pre>
-<p>这种继承方法通过call（或者apply)将父类构造函数的this指向了子类构造函数，这样name就相当于Child的属性了。因为是继承了构造函数所以解决了第一种方法中的缺点。即将属性和方法都写在构造函数里，子类生成一个对象就会调用父类构造函数生成新的方法和属性，因此方法没有实现共享。因为没有了引用类型被改变的缺点，同时也可以向构造函数传参。    </p>
-<p><strong>存在缺点：</strong></p>
-<p>1.父类所有方法和属性都要写在构造函数里，每个实例对象都会拥有一个方法，没有实现方法服用，降低性能。<br>2.父类定义的原型方法对子类不可见（因为子类原型是被构造函数赋值的，父类Dad.prototype被隔离了）</p>
-<h2 id="第三种：原型链-构造函数组合继承"><a href="#第三种：原型链-构造函数组合继承" class="headerlink" title="第三种：原型链+构造函数组合继承"></a>第三种：原型链+构造函数组合继承</h2><pre><code class="bash"><span class="keyword">function</span> Dad(name){ this.name=name;}  
-Dad.prototype.getName=<span class="function"><span class="title">function</span></span>(){console.log(this.name);}   
-
-<span class="keyword">function</span> Child(sex,name){this.sex=sex;Dad.call(this,name);}  
-Child.prototype=new Dad();    
-Child.prototype.constructor=Child; 
-Child.prototype.ownMethod=<span class="function"><span class="title">function</span></span>(){ console.log(<span class="string">"my dad is "</span>+this.name);}
-
-var foo=new Child(<span class="string">"boy"</span>,<span class="string">"Scott's son"</span>); 
-foo.name;       // &gt;&gt;Scott<span class="string">'s son 
-foo.getName(); // &gt;&gt;Scott'</span>s son 
-foo.sex;      // &gt;&gt;boy 
-foo.ownMethod();//&gt;&gt;my dad is Scott<span class="string">'s son //不和谐的输出=。=
-
-var f=new Dad("Scott111");
-f.ownMethod();  //&gt;&gt;error            
-f.getName();   //&gt;&gt;Scott111</span>
-</code></pre>
-<p>相信大家看懂了上面两种继承，这种组合式的继承模式理解起来就小case了。这种方法克服了方法一、二的缺点<br><strong>存在缺点：</strong><br>内存占用大了，每次调用子类实例时，父类构造函数会执行两次，浪费性能</p>
-<p>补充：<br>除此之外，继承方法还有原型式继承、寄生式继承以及寄生组合式继承等，就不一一介绍了。</p>
-<p>———————深夜分割线——————–</p>
-<p>将脑中的知识点梳理了一遍，写下了我的第一篇博客，文中必有疏漏，望批评指正！以求进步！<br>睡觉了~</p>
-
-          
+          <p>我的处女博就献给JS继承吧哈哈哈^_^<br>正文开始之前先叨唠几句。前端学习可谓路漫漫其修远兮，但我们应有上下求索的精神。大体上说学习分四步，一是知识获取，二是知识巩固，三是知识运用，四是知识创新。而做笔记就是第二步的重中之重，这是一个理顺思路、整理知识的过程，将自己学到的知识点完整地写下来，进而加深印象，更好地学习。在健壮技术栈的路上做笔记可谓是功不可没。好了，下面总结一下近期对JS继承的理解。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/05/hello-hexo/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -928,17 +916,15 @@ f.getName();   //&gt;&gt;Scott111</span>
       
         
           
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-          
+          Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in 
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/22/hello-world/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1025,7 +1011,25 @@ f.getName();   //&gt;&gt;Scott111</span>
           
 
           
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
 
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
           
 
         </nav>
@@ -1033,6 +1037,30 @@ f.getName();   //&gt;&gt;Scott111</span>
         
 
         <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/cultbiscuit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                    
+                      Twitter
+                    
+                </a>
+              </span>
+            
           
         </div>
 
@@ -1061,7 +1089,9 @@ f.getName();   //&gt;&gt;Scott111</span>
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        
+
+<div class="copyright" >
   
   &copy; 
   <span itemprop="copyrightYear">2017</span>

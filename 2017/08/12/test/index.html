@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="面试," />
 
 
 
@@ -94,17 +94,18 @@
 
 
 
-<meta name="description" content="引言今天下午参加了网易校招的内推笔试，答得不好。分享一道编程题吧题目描述的很复杂，简述一下就是输入一个01字符串，输出连续的01子串的最大个数。例如：输入“0101011001001001”，它的连续的01子串有010101,10,100,010,01其中最长的为010101，长度为6，因此输出6。 最近一直在学JS，我就用JS去写了，思路很容易得到，我把代码敲好了，但难免会有bug，调试了一会儿">
+<meta name="description" content="今天下午参加了网易校招的内推笔试，答得不好。分享一道编程题吧。题目描述的很复杂，简述一下就是输入一个01字符串，输出连续的01子串的最大个数。例如：输入“0101011001001001”，它的连续的01子串有010101,10,100,010,01其中最长的为010101，长度为6，因此输出6。">
+<meta name="keywords" content="面试">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一道网易笔试编程题及其思路分析">
 <meta property="og:url" content="http://yoursite.com/2017/08/12/test/index.html">
 <meta property="og:site_name" content="胖C博客">
-<meta property="og:description" content="引言今天下午参加了网易校招的内推笔试，答得不好。分享一道编程题吧题目描述的很复杂，简述一下就是输入一个01字符串，输出连续的01子串的最大个数。例如：输入“0101011001001001”，它的连续的01子串有010101,10,100,010,01其中最长的为010101，长度为6，因此输出6。 最近一直在学JS，我就用JS去写了，思路很容易得到，我把代码敲好了，但难免会有bug，调试了一会儿">
+<meta property="og:description" content="今天下午参加了网易校招的内推笔试，答得不好。分享一道编程题吧。题目描述的很复杂，简述一下就是输入一个01字符串，输出连续的01子串的最大个数。例如：输入“0101011001001001”，它的连续的01子串有010101,10,100,010,01其中最长的为010101，长度为6，因此输出6。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-08-12T12:34:12.294Z">
+<meta property="og:updated_time" content="2017-08-20T09:15:06.891Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一道网易笔试编程题及其思路分析">
-<meta name="twitter:description" content="引言今天下午参加了网易校招的内推笔试，答得不好。分享一道编程题吧题目描述的很复杂，简述一下就是输入一个01字符串，输出连续的01子串的最大个数。例如：输入“0101011001001001”，它的连续的01子串有010101,10,100,010,01其中最长的为010101，长度为6，因此输出6。 最近一直在学JS，我就用JS去写了，思路很容易得到，我把代码敲好了，但难免会有bug，调试了一会儿">
+<meta name="twitter:description" content="今天下午参加了网易校招的内推笔试，答得不好。分享一道编程题吧。题目描述的很复杂，简述一下就是输入一个01字符串，输出连续的01子串的最大个数。例如：输入“0101011001001001”，它的连续的01子串有010101,10,100,010,01其中最长的为010101，长度为6，因此输出6。">
 
 
 
@@ -168,10 +169,11 @@
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
+      <div class="header-inner">
+<div class="site-brand-wrapper">
   <div class="site-meta ">
     
-
+   
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
@@ -302,6 +304,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试/" itemprop="url" rel="index">
+                    <span itemprop="name">面试</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -329,9 +353,9 @@
       
 
       
-        <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>今天下午参加了网易校招的内推笔试，答得不好。分享一道编程题吧<br>题目描述的很复杂，简述一下就是输入一个01字符串，输出连续的01子串的最大个数。<br>例如：输入“0101011001001001”，它的连续的01子串有010101,10,100,010,01其中最长的为010101，长度为6，因此输出6。</p>
-<p>最近一直在学JS，我就用JS去写了，思路很容易得到，我把代码敲好了，但难免会有bug，调试了一会儿，时间就到了（当然得分为零，西湖的水，我的泪啊啊=_=||），不禁觉得怎么时间过得如此快？难道学到忘我了？哈哈哈哈</p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>分析一下思路。<br>我们输入一个字符串，要输出最大子串的长度，因此首先考虑到数组和for循环。于是要用split把这个字符串一顿拆。于是对数组遍历，当遍历到相邻的两个元素相同时，就得停止遍历，然后得到该子串的长度，保存下来。再利用slice方法将这个子串切掉，得到一个新数组，然后怎么办？大家一定都知道，当然是利用递归的方法把新数组再遍历，然后找出子串的长度记录下来并与上一个子串的长度比较，取最大的长度。然后重复切数组、遍历、取最大这三个步骤。当切完后的数组长度为1的时候，我们输出最大的字串长度。<br>或许还有更好的思路，如果你有的话欢迎加扣扣2210980727我们一起讨论，共同进步。<br>分享一下 我的代码：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt; 	</div><div class="line">   <span class="keyword">function</span> outPutMaxLength(arr)&#123;</div><div class="line">	   var newArr;</div><div class="line">	   var j=arr.length; </div><div class="line">	   <span class="keyword">for</span>(var i=1;i&lt;j;i++)</div><div class="line">	   &#123;</div><div class="line">		  <span class="keyword">if</span>(arr[i]==arr[i-1])</div><div class="line">		  &#123;</div><div class="line">		     newArr=arr.slice(i);</div><div class="line">			 j=i;</div><div class="line">		     res=Math.max(res,j);</div><div class="line">		  &#125;</div><div class="line">	   &#125;   </div><div class="line">	  //递归		</div><div class="line">      <span class="keyword">if</span>(newArr.length!==1)</div><div class="line">	  &#123; </div><div class="line">	    <span class="built_in">return</span> outPutMaxLength(newArr);</div><div class="line">	  &#125;</div><div class="line">	  <span class="keyword">else</span></div><div class="line">	  &#123;</div><div class="line">	   <span class="built_in">return</span> res;</div><div class="line">      &#125;		</div><div class="line">   &#125;</div><div class="line">	var s=<span class="string">'101101011'</span>;  </div><div class="line">	var sArray=s.split(<span class="string">""</span>);</div><div class="line">	var res=0;</div><div class="line">	var ans=outPutMaxLength(sArray);</div><div class="line">	document.write(ans); 	 </div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure></p>
+        <p>今天下午参加了网易校招的内推笔试，答得不好。分享一道编程题吧。<br>题目描述的很复杂，简述一下就是输入一个01字符串，输出连续的01子串的最大个数。<br>例如：输入“0101011001001001”，它的连续的01子串有010101,10,100,010,01其中最长的为010101，长度为6，因此输出6。<br><a id="more"></a></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>最近一直在学JS，我就用JS去写了，思路很容易得到，我把代码敲好了，但难免会有bug，调试了一会儿，时间就到了（当然得分为零，西湖的水，我的泪啊啊=_=||），不禁觉得怎么时间过得如此快？难道学到忘我了？哈哈哈哈</p>
+<p>分析一下思路。<br>我们输入一个字符串，要输出最大子串的长度，因此首先考虑到数组和for循环。于是要用split把这个字符串一顿拆。于是对数组遍历，当遍历到相邻的两个元素相同时，就得停止遍历，然后得到该子串的长度，保存下来。再利用slice方法将这个子串切掉，得到一个新数组，然后怎么办？大家一定都知道，当然是利用递归的方法把新数组再遍历，然后找出子串的长度记录下来并与上一个子串的长度比较，取最大的长度。然后重复切数组、遍历、取最大这三个步骤。当切完后的数组长度为1的时候，我们输出最大的字串长度。<br>或许还有更好的思路，如果你有的话欢迎加扣扣2210980727我们一起讨论，共同进步。<br>分享一下 我的代码：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt; 	</div><div class="line">   <span class="keyword">function</span> outPutMaxLength(arr)&#123;</div><div class="line">	   var newArr;</div><div class="line">	   var j=arr.length; </div><div class="line">	   <span class="keyword">for</span>(var i=1;i&lt;j;i++)</div><div class="line">	   &#123;</div><div class="line">		  <span class="keyword">if</span>(arr[i]==arr[i-1])</div><div class="line">		  &#123;</div><div class="line">		     newArr=arr.slice(i);</div><div class="line">			 j=i;</div><div class="line">		     res=Math.max(res,j);</div><div class="line">		  &#125;</div><div class="line">	   &#125;   </div><div class="line">	  //递归		</div><div class="line">      <span class="keyword">if</span>(newArr.length!==1)</div><div class="line">	  &#123; </div><div class="line">	    <span class="built_in">return</span> outPutMaxLength(newArr);</div><div class="line">	  &#125;</div><div class="line">	  <span class="keyword">else</span></div><div class="line">	  &#123;</div><div class="line">	   <span class="built_in">return</span> res;</div><div class="line">      &#125;		</div><div class="line">   &#125;</div><div class="line">	var s=<span class="string">'101101011'</span>;  </div><div class="line">	var sArray=s.split(<span class="string">""</span>);</div><div class="line">	var res=0;</div><div class="line">	var ans=outPutMaxLength(sArray);</div><div class="line">	document.write(ans); 	 </div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure></p>
 <p>短短几十行，我在敲打码时，敲出了bug，很酷的扔掉了20分。</p>
 <h2 id="感悟"><a href="#感悟" class="headerlink" title="感悟"></a>感悟</h2><p>理论很简单，思路也很明确，但写起程序来就完全不是一回事了，还得多练啊。不说了，我要去敲代码了23333</p>
 
@@ -348,6 +372,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/面试/" rel="tag"># 面试</a>
+          
+        </div>
       
 
       
@@ -454,7 +484,25 @@
           
 
           
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
 
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
           
 
         </nav>
@@ -462,6 +510,30 @@
         
 
         <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/cultbiscuit" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                    
+                      Twitter
+                    
+                </a>
+              </span>
+            
           
         </div>
 
@@ -486,7 +558,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文"><span class="nav-number">2.</span> <span class="nav-text">正文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#感悟"><span class="nav-number">3.</span> <span class="nav-text">感悟</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#正文"><span class="nav-number">1.</span> <span class="nav-text">正文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#感悟"><span class="nav-number">2.</span> <span class="nav-text">感悟</span></a></li></ol></div>
             
 
           </div>
@@ -506,7 +578,9 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        
+
+<div class="copyright" >
   
   &copy; 
   <span itemprop="copyrightYear">2017</span>
