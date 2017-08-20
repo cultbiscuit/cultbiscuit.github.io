@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="引言大家在学JS的时候一定都见过(function fn(){ })( )或者(function fn(){ }())这样的写法，甚至!function fn(){ }( )这样的写法。既简洁又高大上。这就是IIFE(Immediately Invoked Function Expression)，即立即调用的函数表达式，当然有人称呼它为立即调用函数或自执行函数，严格来说，这样的叫法是不严谨的。如">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IIFE这么强大，幕后大佬究竟是谁？">
+<meta property="og:url" content="http://yoursite.com/2017/08/18/IIFE/index.html">
+<meta property="og:site_name" content="胖C博客">
+<meta property="og:description" content="引言大家在学JS的时候一定都见过(function fn(){ })( )或者(function fn(){ }())这样的写法，甚至!function fn(){ }( )这样的写法。既简洁又高大上。这就是IIFE(Immediately Invoked Function Expression)，即立即调用的函数表达式，当然有人称呼它为立即调用函数或自执行函数，严格来说，这样的叫法是不严谨的。如">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-08-20T07:16:22.560Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="IIFE这么强大，幕后大佬究竟是谁？">
+<meta name="twitter:description" content="引言大家在学JS的时候一定都见过(function fn(){ })( )或者(function fn(){ }())这样的写法，甚至!function fn(){ }( )这样的写法。既简洁又高大上。这就是IIFE(Immediately Invoked Function Expression)，即立即调用的函数表达式，当然有人称呼它为立即调用函数或自执行函数，严格来说，这样的叫法是不严谨的。如">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/08/18/IIFE/"/>
+
+
+
+
+
+  <title>IIFE这么强大，幕后大佬究竟是谁？ | 胖C博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">胖C博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">知识总结，学习笔记</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/18/IIFE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="胖C">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/timg.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="胖C博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">IIFE这么强大，幕后大佬究竟是谁？</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-18T13:23:56+08:00">
+                2017-08-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>大家在学JS的时候一定都见过(function fn(){ })( )或者(function fn(){ }())这样的写法，甚至!function fn(){ }( )这样的写法。既简洁又高大上。这就是IIFE(Immediately Invoked Function Expression)，即立即调用的函数表达式，当然有人称呼它为立即调用函数或自执行函数，严格来说，这样的叫法是不严谨的。如果你只是会用而不理解它的工作机制，学习道路上是无法走得更远的。该篇博文将详细讲解一下IIFE工作机制。</p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>上一篇博文，我讲到作用域的词法解析，详细介绍了JS预解析时函数声明提前的概念。<a href="http://pangc.cc/2017/08/08/scope/" target="_blank" rel="external">传送门</a> ，IIFE的本质就是从这个知识点开始的。</p>
+<h3 id="函数运行机制"><a href="#函数运行机制" class="headerlink" title="函数运行机制"></a>函数运行机制</h3><p>我们先看一下函数定义的两种形式:<br>1.函数以语句的形式定义（函数声明）<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">function</span> <span class="function"><span class="title">fn</span></span>()&#123;</div><div class="line">     alert(<span class="string">"函数声明"</span>);</div><div class="line">	 &#125;</div></pre></td></tr></table></figure></p>
+<p>2.函数以表达式形式定义（函数表达式）<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var fn=<span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">     alert(<span class="string">"函数表达式"</span>);</div><div class="line">	 &#125;</div></pre></td></tr></table></figure></p>
+<p>从JS解析角度分析它们背后的运作模式：<br><strong>针对第一种函数声明形式：在JS预解析的时候，看到了函数声明function，因此会将函数声明提前，将整体function fn(){alert(“函数声明”);}置于当前的执行环境。注意这只是一个声明！！！并没有调用该函数，因此没有执行。当然也不会输出任何值。<br>针对第二种函数表达式形式：在JS预解析的时候，看到了变量var fn，因此会将变量声明提前，并给fn赋一个初值undefined置于当前的执行环境。因为这是一个表达式，所以会给fn变量赋值（该例子的值是一个匿名函数），该匿名函数function(){alert(“函数表达式”);}整体声明之后，然后赋给了变量fn。注意这只是一个函数声明！！！并没有调用该函数，因此没有执行。当然也不会输出任何值。</strong></p>
+<p>经过分析之后，是否明朗了一些？现在我对这两个形式分别加一个执行语句：<br>1.函数以语句的形式定义（函数声明）<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">function</span> <span class="function"><span class="title">fn</span></span>()&#123;</div><div class="line">     alert(<span class="string">"函数声明"</span>);</div><div class="line">	 &#125;</div><div class="line">fn();</div></pre></td></tr></table></figure></p>
+<p>2.函数以表达式形式定义（函数表达式）<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var fn=<span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">     alert(<span class="string">"函数表达式"</span>);</div><div class="line">	 &#125;</div><div class="line">fn();</div></pre></td></tr></table></figure></p>
+<p>针对函数声明形式：添加fn();这是执行语句，此时会输出“函数声明”。（在预解析阶段将匿名函数已经声明提前了，执行fn()输出）<br>针对函数表达式形式：添加fn();这是执行语句，此时会输出“函数表达式”。（在执行阶段将匿名函数已经声明提前了，并赋给fn，执行fn()输出）</p>
+<p>进一步修改，将执行语句放在函数定义前面会有怎样的变化？<br>1.函数以语句的形式定义（函数声明）<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">fn();</div><div class="line"><span class="keyword">function</span> <span class="function"><span class="title">fn</span></span>()&#123;</div><div class="line">     alert(<span class="string">"函数声明"</span>);</div><div class="line">	 &#125;</div></pre></td></tr></table></figure></p>
+<p>2.函数以表达式形式定义（函数表达式）<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">fn();</div><div class="line">var fn=<span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">     alert(<span class="string">"函数表达式"</span>);</div><div class="line">	 &#125;</div></pre></td></tr></table></figure></p>
+<p>针对函数声明形式：添加fn();这是执行语句，此时会输出“函数声明”。<br>针对函数表达式形式：添加fn();这是执行语句，此时会<strong>报错！！！！</strong></p>
+<p>为什么会报错？仔细想一想。（因为在预解析阶段并没有将匿名函数提前！执行环境中没有fn，执行fn()时当然报错）</p>
+<h3 id="IIFE"><a href="#IIFE" class="headerlink" title="IIFE"></a>IIFE</h3><p>明白了函数运行机制，再理解IIFE就小菜一碟了。<br>IIFE直译就是立即调用的函数表达式，注意最后五个字<strong>函数表达式</strong>，什么是函数表达式？<br>对变量使用了运算符，或者赋值运算都是函数表达式。比如说a=1;a+=1;a++;这些都是函数表达式。</p>
+<p>在IIFE中<br>1.对function fn(){}使用了()运算符，匿名函数就变成了一个表达式(function fn(){})，此时对这个函数表达式后面加()表示执行。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">(<span class="keyword">function</span> fn(a)&#123;</div><div class="line">	console(a);</div><div class="line">	&#125;)(111); </div><div class="line">输出111</div></pre></td></tr></table></figure></p>
+<p>2.对function fn(){}使用了!运算符，匿名函数就变成了一个表达式!function fn(){}，此时对这个函数表达式后面加()表示执行。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">!<span class="keyword">function</span> fn(a)&#123;</div><div class="line">	console(a);</div><div class="line">	&#125;(111);</div><div class="line">输出111</div></pre></td></tr></table></figure></p>
+<p>3.对function fn(){}使用了=运算符，匿名函数就变成了一个表达式var p=function fn(){}，此时对这个函数表达式后面加()表示执行。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var p=<span class="keyword">function</span> fn(a)&#123;</div><div class="line">	console(a);</div><div class="line">	&#125;(111);</div><div class="line">输出111</div></pre></td></tr></table></figure></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>IIFE的实质就是利用() ! = + 等运算符将对函数声明转化为函数表达式，然后看到表达式后面有()，再去执行。因此这就是立即执行函数表达式。因为()运算符，给人更直观的感受，形如(function fn(){})()，成为IIFE的常用写法，这种写法又称作“函数包裹器”。<br>总结到这里，希望对读者有帮助。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/12/test/" rel="next" title="一道网易笔试编程题及其思路分析">
+                <i class="fa fa-chevron-left"></i> 一道网易笔试编程题及其思路分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/timg.jpg"
+               alt="胖C" />
+          <p class="site-author-name" itemprop="name">胖C</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文"><span class="nav-number">2.</span> <span class="nav-text">正文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#函数运行机制"><span class="nav-number">2.1.</span> <span class="nav-text">函数运行机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IIFE"><span class="nav-number">2.2.</span> <span class="nav-text">IIFE</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">胖C</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Gemini
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
