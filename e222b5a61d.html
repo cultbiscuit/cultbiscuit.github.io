@@ -286,8 +286,7 @@
   <div class="comments" id="comments">
     
        
-         <div onclick="ShowGitment()" id="gitment-display-button">显示 Gitment 评论</div>
-         <div id="gitment-container" style="display:none"></div>
+         <div id="gitment-container"></div>
        
 	   
     
@@ -589,19 +588,15 @@
    <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
    
        <script type="text/javascript">
-           function ShowGitment(){
-               document.getElementById("gitment-display-button").style.display = "none";
-               document.getElementById("gitment-container").style.display = "block";
-               var gitment = new Gitment({
-                   id: document.location.href, 
-                   owner: 'cultbiscuit',
-                   repo: 'cultbiscuit.github.io',
-                   oauth: {
-                       client_id: 'ebd65098494df10c4df0',
-                       client_secret: 'b3307226b47493109b193feeb4d0099d8d2c33c8',
-                   }});
-               gitment.render('gitment-container');
-           }
+           var gitment = new Gitment({
+               id: window.location.pathname, 
+               owner: 'cultbiscuit',
+               repo: 'cultbiscuit.github.io',
+               oauth: {
+                   client_id: 'ebd65098494df10c4df0',
+                   client_secret: 'b3307226b47493109b193feeb4d0099d8d2c33c8',
+               }});
+           gitment.render('gitment-container');
        </script>
    
 
